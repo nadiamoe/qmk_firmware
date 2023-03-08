@@ -100,10 +100,10 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
         // This one is reversed so it is easier to scroll down with my thumb.
         if (clockwise) {
             for (int i = 0; i < wheels; i++)
-                tap_code(KC_MS_WH_DOWN);
+                tap_code(KC_PGDN);
         } else {
             for (int i = 0; i < wheels; i++)
-                tap_code(KC_MS_WH_UP);
+                tap_code(KC_PGUP);
         }
     } else if (index == 1) {
         // Volume control
