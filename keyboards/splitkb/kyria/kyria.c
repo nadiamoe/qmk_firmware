@@ -35,45 +35,38 @@ bool oled_task_kb(void) {
         // clang-format on
 
         oled_write_P(qmk_logo, false);
-        oled_write_P(PSTR("Kyria "), false);
+        oled_write_P(PSTR("\nKyria "), false);
 #if defined(KEYBOARD_splitkb_kyria_rev1)
-        oled_write_P(PSTR("rev1\n\n"), false);
+        oled_write_P(PSTR("r1"), false);
 #elif defined(KEYBOARD_splitkb_kyria_rev2)
         oled_write_P(PSTR("rev2\n\n"), false);
 #elif defined(KEYBOARD_splitkb_kyria_rev3)
         oled_write_P(PSTR("rev3\n\n"), false);
 #endif
         // Host Keyboard Layer Status
-        oled_write_P(PSTR("Layer: "), false);
+        oled_write_P(PSTR("  -  "), false);
         switch (get_highest_layer(layer_state | default_layer_state)) {
             case 0:
                 oled_write_P(PSTR("QWERTY\n"), false);
                 break;
             case 1:
-                oled_write_P(PSTR("Dvorak\n"), false);
+                oled_write_P(PSTR("Movsym\n"), false);
                 break;
             case 2:
-                oled_write_P(PSTR("Colemak-DH\n"), false);
+                oled_write_P(PSTR("Numpad\n"), false);
                 break;
             case 3:
-                oled_write_P(PSTR("Nav\n"), false);
+                oled_write_P(PSTR("Fs\n"), false);
                 break;
             case 4:
-                oled_write_P(PSTR("Sym\n"), false);
+                oled_write_P(PSTR("Gamurr\n"), false);
                 break;
-            case 5:
-                oled_write_P(PSTR("Function\n"), false);
-                break;
-            case 6:
-                oled_write_P(PSTR("Adjust\n"), false);
-                break;
-            default:
-                oled_write_P(PSTR("Undefined\n"), false);
         }
 
         // Host Keyboard LED Status
         led_t led_usb_state = host_keyboard_led_state();
-        oled_write_P(led_usb_state.num_lock ? PSTR("NUMLCK ") : PSTR("       "), false);
+        oled_write_P(PSTR("\n"), false);
+        oled_write_P(led_usb_state.num_lock ? PSTR("       ") : PSTR("NUMOFF "), false);
         oled_write_P(led_usb_state.caps_lock ? PSTR("CAPLCK ") : PSTR("       "), false);
         oled_write_P(led_usb_state.scroll_lock ? PSTR("SCRLCK ") : PSTR("       "), false);
     } else {
@@ -102,20 +95,24 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
     }
 
     if (index == 0) {
+        const int wheels = 1;
+        // Page up/Page down
+        // This one is reversed so it is easier to scroll down with my thumb.
+        if (clockwise) {
+            for (int i = 0; i < wheels; i++)
+                tap_code(KC_MS_WH_DOWN);
+        } else {
+            for (int i = 0; i < wheels; i++)
+                tap_code(KC_MS_WH_UP);
+        }
+    } else if (index == 1) {
         // Volume control
         if (clockwise) {
             tap_code(KC_VOLU);
         } else {
             tap_code(KC_VOLD);
         }
-    } else if (index == 1) {
-        // Page up/Page down
-        if (clockwise) {
-            tap_code(KC_PGDN);
-        } else {
-            tap_code(KC_PGUP);
-        }
     }
-    return true;
+    return false;
 }
 #endif
