@@ -17,6 +17,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+// Roobre's patches
+//#define MASTER_RIGHT
+#define TAPPING_TERM 175
+#define ENCODER_DIRECTION_FLIP
+#define ENCODER_RESOLUTION 2 // Remember: Encoder resolution must be flashed on the side which has the encoder, not only on the master!
+// End of Roobre's patches
+
+// wiring
+#define MATRIX_ROW_PINS \
+    { B4, E6, D7, D4 }
+#define MATRIX_COL_PINS \
+    { B6, B2, B3, B1, F7, F6, F5, F4 }
+
+/* COL2ROW, ROW2COL*/
+#define DIODE_DIRECTION COL2ROW
+
 /*
  * Split Keyboard specific options, make sure you have 'SPLIT_KEYBOARD = yes' in your rules.mk, and define SOFT_SERIAL_PIN.
  */
