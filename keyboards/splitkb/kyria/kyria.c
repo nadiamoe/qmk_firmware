@@ -116,3 +116,25 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
     return false;
 }
 #endif
+
+void leds(bool state) {
+    // Acive low.
+    writePin(B0, !state);
+    writePin(D5, !state);
+}
+
+void keyboard_post_init_user(void) {
+    // Turn onboard LEDs off.
+    // The two pins used for LEDs on the Pro micro are B0 and D5.
+    // https://www.reddit.com/r/olkb/comments/ju9gqx/comment/gcbl5dl/?utm_source=reddit&utm_medium=web2x&context=3
+    setPinOutput(B0);
+    setPinOutput(D5);
+    leds(false);
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    // Turn LEDs on if we're not on layer 0.
+    leds(IS_LAYER_OFF_STATE(state, 0));
+
+    return state;
+ }
