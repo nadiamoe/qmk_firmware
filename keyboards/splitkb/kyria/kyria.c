@@ -116,3 +116,30 @@ bool encoder_update_kb(uint8_t index, bool clockwise) {
     return false;
 }
 #endif
+
+void leds(uint8_t state) {
+    // Clamp state to our maximum resolution (2 bits).
+    if (state > 0b11) {
+        state = 0b11;
+    }
+
+    // Least significant bit, inverted as LEDs are active low.
+    writePin(B0, !(state & 0b01));
+    writePin(D5, !(state & 0b10));
+}
+
+void keyboard_post_init_user(void) {
+    // Turn onboard LEDs off.
+    // The two pins used for LEDs on the Pro micro are B0 and D5.
+    // https://www.reddit.com/r/olkb/comments/ju9gqx/comment/gcbl5dl/?utm_source=reddit&utm_medium=web2x&context=3
+    setPinOutput(B0);
+    setPinOutput(D5);
+    leds(0);
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    // Turn LEDs on if we're not on layer 0.
+    leds(get_highest_layer(state));
+
+    return state;
+ }
