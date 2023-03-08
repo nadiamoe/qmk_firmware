@@ -17,6 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+// Roobre's patches
+//#define MASTER_RIGHT
+#define IGNORE_MOD_TAP_INTERRUPT
+#define TAPPING_TERM 175
+#define ENCODER_DIRECTION_FLIP
+#define ENCODER_RESOLUTION 2 // Remember: Encoder resolution must be flashed on the side which has the encoder, not only on the master!
+// End of Roobre's patches
+
 // wiring
 #define MATRIX_ROW_PINS \
     { B4, E6, D7, D4 }
